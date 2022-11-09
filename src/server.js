@@ -24,7 +24,7 @@ const date = new Date();
 
 app.set('views', __dirname + 'src/views');
 
-app.use('/upload', express.static(__dirname + '/src/upload'));
+app.use('/upload', express.static(__dirname + '/upload'));
 app.use(cors());
 
 // ### url 맵핑
@@ -33,11 +33,12 @@ app.get('/', (req, res) => {
 });
 
 // ### 업로드 경로 설정
-const uploadFolderName = '/src/upload/' + date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate();
+const uploadFolderName = '/upload/' + date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate();
 const uploadPath = join(__dirname, uploadFolderName);
 
 // 폴더가 없을 경우 생성
 if (!fs.existsSync(uploadPath)) {
+    console.log('make directory: ' + uploadPath);
     mkdirs(uploadPath.toString());
 }
 
@@ -63,12 +64,14 @@ const filefields = upload.fields([
 
 // ### API 정의
 app.post('/api/uploadImg', filefields, (req, res) => {
-    const resArr = [];
+    const resArr = {
+        data: [],
+    };
     const { uploadedImage } = req.files;
 
     uploadedImage.map((data) => {
-        resArr.push({
-            path: 'http://localhost:4000/' + uploadFolderName + '/',
+        resArr.data.push({
+            path: 'http://localhost:4000' + uploadFolderName + '/',
             originalname: data.originalname,
             uuidName: data.filename,
             ext: path.extname(data.originalname),
