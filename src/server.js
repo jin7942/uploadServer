@@ -16,6 +16,8 @@ import { mkdirs } from './helper/fileHelper';
 // 설정 파일
 import config from './helper/_config.js';
 
+const sharp = require('sharp');
+
 // ### express 기본 설정
 const app = express();
 const __dirname = resolve();
@@ -69,14 +71,34 @@ app.post('/api/uploadImg', filefields, (req, res) => {
     };
     const { uploadedImage } = req.files;
 
+    let i = 0;
     uploadedImage.map((data) => {
+        if (i == 0) {
+            try {
+                sharp(data.path) // 압축할 이미지 경로
+                    .resize(410, 230) // 리사이징
+                    .withMetadata()
+                    .toBuffer((err, buffer) => {
+                        if (err) throw err;
+                        // 압축된 파일 새로 저장(덮어씌우기)
+                        fs.writeFile(data.path, buffer, (err) => {
+                            if (err) throw err;
+                        });
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
         resArr.data.push({
             path: 'http://localhost:4000' + uploadFolderName + '/',
             originalname: data.originalname,
             uuidName: data.filename,
             ext: path.extname(data.originalname),
             fileSize: data.size,
+            defaultNy: i == 0 ? 1 : 0,
         });
+        i++;
     });
     res.json(resArr);
     console.log(resArr);
