@@ -34,9 +34,31 @@
 -   enctype : multipart/form-data
 -   name : uplaodImage
 
+### EX)
+
+```javascript
+$.ajax({
+    url: 'http://localhost:4000/api/uploadImg', 
+    type: 'POST',
+    data: data,
+    enctype: 'multipart/form-data',
+    processData: false,
+    contentType: false,
+    cache: false,
+    success: (response) => {
+        // Handle response
+        // ...
+    },
+    error: function () {
+        // Handle upload error
+        // ...
+    },
+});
+```
+
 ## Response
 
-Json Array 반환
+### Json Array 반환
 
 | name         | type   | Description       |
 | ------------ | ------ | ----------------- |
