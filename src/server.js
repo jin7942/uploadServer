@@ -78,7 +78,7 @@ app.post('/api/uploadImg', filefields, (req, res) => {
         if (i == 0) {
             try {
                 sharp(data.path) // 압축할 이미지 경로
-                    .resize(410, 230) // 리사이징 witdh * height
+                    .resize({ width: 230, height: 410, position: 'left top' }) // 리사이징 witdh * height
                     .withMetadata() // 이미지 정보를 저장해준다
                     .toBuffer((err, buffer) => {
                         if (err) throw err;
