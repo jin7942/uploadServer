@@ -125,4 +125,4 @@ app.post('/api/uploadImg', filefields, (req, res) => {
 
 // ### 서버 시작
 const httpServer = http.createServer(app);
-httpServer.listen(config.PORT, () => console.log(config.DOMAIN + config.PORT));
+httpServer.listen(config.PORT, () => console.log(config.DOMAIN + ':' + config.PORT));
