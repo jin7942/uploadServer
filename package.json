@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "nodemon"
     },
-    "author": "",
+    "author": "jin7942",
     "license": "MIT",
     "dependencies": {
         "@babel/cli": "^7.19.3",
