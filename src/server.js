@@ -94,7 +94,7 @@ app.post('/api/uploadImg', filefields, (req, res) => {
 
         // 클라이언트에 응답 보낼 데이터 만들기
         resArr.data.push({
-            path: config.DOMAIN + uploadFolderName + '/', // 업로드 경로(이미지 제공 경로)
+            path: config.DOMAIN + ':4000' + uploadFolderName + '/', // 업로드 경로(이미지 제공 경로)
             originalname: data.originalname, // 원본 이름
             uuidName: data.filename, // uuid 이름
             ext: path.extname(data.originalname), // 확장자
