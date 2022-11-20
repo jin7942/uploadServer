@@ -74,11 +74,16 @@ app.post('/api/uploadImg', filefields, (req, res) => {
 
     let i = 0;
     uploadedImage.map((data) => {
+        console.log(i);
         // 썸네일로 보일 첫 번째 사지만 리사이징 한다.
         if (i == 0) {
             try {
                 sharp(data.path) // 압축할 이미지 경로
-                    .resize({ width: 230, height: 410, fit: 'fill' }) // 리사이징 witdh * height
+                    .resize({
+                        width: 400,
+                        height: 400,
+                        fit: 'contain',
+                    }) // 리사이징 witdh * height
                     .withMetadata() // 이미지 정보를 저장해준다
                     .toBuffer((err, buffer) => {
                         if (err) throw err;
