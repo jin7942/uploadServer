@@ -4,15 +4,16 @@ import path from 'path';
 import fs from 'fs';
 
 // 설치 필요
-// npm install 모듈이름 --save
+// npm install
 import http from 'http';
 import express from 'express';
 import multer from 'multer';
 import { v4 } from 'uuid';
 import sharp from 'sharp';
+import cors from 'cors';
 
 // 직접 구현한 모듈
-import { mkdirs } from './helper/fileHelper';
+import { mkdirs } from './helper/fileHelper.js';
 
 // 설정 파일
 import config from './helper/_config.js';
@@ -20,7 +21,6 @@ import config from './helper/_config.js';
 // ### express 기본 설정
 const app = express();
 const __dirname = resolve();
-const cors = require('cors');
 const date = new Date();
 
 app.set('views', __dirname + 'src/views');
