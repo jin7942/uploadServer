@@ -2,8 +2,10 @@
     "name": "uploadserver",
     "version": "1.0.0",
     "description": "",
+    "type": "module",
     "scripts": {
-        "dev": "nodemon"
+        "dev": "nodemon",
+        "start": "node src/server.js"
     },
     "author": "jin7942",
     "license": "MIT",

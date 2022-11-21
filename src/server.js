@@ -74,7 +74,6 @@ app.post('/api/uploadImg', filefields, (req, res) => {
 
     let i = 0;
     uploadedImage.map((data) => {
-        console.log(i);
         // 썸네일로 보일 첫 번째 사지만 리사이징 한다.
         if (i == 0) {
             try {
@@ -82,7 +81,7 @@ app.post('/api/uploadImg', filefields, (req, res) => {
                     .resize({
                         width: 400,
                         height: 400,
-                        fit: 'contain',
+                        fit: 'cover',
                     }) // 리사이징 witdh * height
                     .withMetadata() // 이미지 정보를 저장해준다
                     .toBuffer((err, buffer) => {
