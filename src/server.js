@@ -64,10 +64,7 @@ app.post('/api/uploadImg', filefields, async (req, res) => {
         // 첫 번째 이미지에 대해 썸네일 리사이징 수행
         if (i === 0) {
             try {
-                const buffer = await sharp(data.path)
-                    .resize({ width: 400, height: 400, fit: 'cover' })
-                    .withMetadata()
-                    .toBuffer();
+                const buffer = await sharp(data.path).resize({ width: 400, height: 400, fit: 'cover' }).withMetadata().toBuffer();
                 await fs.promises.writeFile(data.path, buffer);
             } catch (err) {
                 console.error(err);
@@ -80,7 +77,7 @@ app.post('/api/uploadImg', filefields, async (req, res) => {
             uuidName: data.filename,
             ext: data.originalname.slice(data.originalname.lastIndexOf('.')),
             fileSize: data.size,
-            defaultNy: i === 0 ? 1 : 0,
+            sort: i,
         });
         i++;
     }
