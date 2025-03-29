@@ -1,109 +1,95 @@
-# Upload Server (이미지 업로드 API)
+# Upload Image Server
 
-Node.js + Express 기반 이미지 업로드 서버.  
-Multer와 Sharp를 사용하여 이미지 저장 및 리사이징을 처리하며, 프론트엔드에서 쉽게 연동 가능하다.
+NextUse 중고거래 플랫폼에서 사용하는 독립형 이미지 업로드 서버입니다.  
+DB 없이 운영되며, 단순하고 가볍게 구성되었습니다.
 
 ## 주요 기능
 
-- 날짜별 디렉토리 생성 및 자동 저장
-- 첫 번째 이미지 1장 리사이징 (400x400)
-- 업로드 및 삭제 API 제공
-- CORS 허용 (모든 출처)
-- 설정 파일 기반 구성
+- 이미지 업로드 (다중 파일 가능)
+- 첫 번째 이미지 썸네일 리사이징 (400x400)
+- 업로드된 이미지 URL 반환
+- 이미지 삭제 API
+- 정적 이미지 접근 지원 (/upload 경로)
+
+## 디렉토리 구조
+
+```
+uploadServer/
+├── helper/
+│   ├── fileHelper.js
+│   └── _config.js
+├── src/
+│   └── views/
+│       └── index.html
+├── upload/               # 저장 디렉토리 (년/월/일)
+└── index.js              # 메인 서버 코드
+```
 
 ## 기술 스택
 
 - Node.js + Express
 - Multer
 - Sharp
-- UUID
 - CORS
+- UUID
+- path / fs
 
-## 설치 및 실행
+## 업로드 흐름
 
-```bash
-git clone https://github.com/jin7942/uploadServer.git
-cd uploadServer
-npm install
-npm start
-```
+1. 클라이언트에서 FormData로 이미지 업로드
+2. 서버는 날짜 디렉토리 생성 후 저장
+3. 첫 번째 이미지는 썸네일 리사이징
+4. JSON 응답으로 메타데이터 반환
 
-접속: http://localhost:4000
+### POST /api/uploadImg
 
-## 업로드 API
-
-- POST /api/uploadImg
-- multipart/form-data
-- 필드명: uploadedImage
-- 다중 파일 업로드 가능
-
-### 응답 형식
+- Content-Type: multipart/form-data
+- 필드명: `images`
+- 응답 예시:
 
 ```json
 {
   "data": [
     {
-      "path": "http://localhost:4000/upload/2025/03/22/",
-      "originalname": "test.png",
-      "uuidName": "uuid-image.png",
-      "ext": ".png",
-      "fileSize": 12345,
+      "path": "http://localhost:4000/upload/2025/03/29/",
+      "originalname": "sample.jpg",
+      "uuidName": "uuid.jpg",
+      "ext": ".jpg",
+      "fileSize": 123456,
       "sort": 0
     }
   ]
 }
 ```
 
-## 삭제 API
+### DELETE /api/uploadImg
 
-- DELETE /api/uploadImg
-- Header: filename=2025/03/22/uuid.png
+- Header: `filename` (상대경로)
+- 예시: `/upload/2025/03/29/uuid.jpg`
 
-## 연동 예시
+## 정적 이미지 경로
 
-### React (Axios)
+- URL: `/upload/yyyy/mm/dd/filename`
+- 예시: `http://localhost:4000/upload/2025/03/29/uuid.jpg`
 
-```js
-const formData = new FormData();
-formData.append("uploadedImage", file);
+## 실행 방법
 
-axios.post("http://localhost:4000/api/uploadImg", formData)
-  .then(res => console.log(res.data));
+```bash
+npm install
+node index.js
 ```
 
-### Vanilla JS (Ajax)
+또는
 
-```js
-const formData = new FormData();
-formData.append("uploadedImage", file);
-
-const xhr = new XMLHttpRequest();
-xhr.open("POST", "http://localhost:4000/api/uploadImg");
-xhr.onreadystatechange = () => {
-  if (xhr.readyState === 4 && xhr.status === 200) {
-    const result = JSON.parse(xhr.responseText);
-    console.log(result);
-  }
-};
-xhr.send(formData);
+```bash
+npm start
 ```
 
-## 설정
+> `package.json`에 `"start": "node index.js"` 설정이 되어 있어야 함
 
-설정 파일: `helper/_config.js`
+## 향후 계획
 
-| 항목 | 설명 |
-|------|------|
-| PORT | 서버 실행 포트 |
-| DOMAIN | 기본 주소 |
-| FILE_MAX_COUNT | 업로드 가능 최대 이미지 수 |
-
-## 주의 사항
-
-- 업로드된 파일은 날짜별로 저장됨
-- 첫 이미지만 리사이징
-- 인증 처리 없음
-
-## 라이선스
-
-MIT License
+- API Key 기반 인증 추가
+- 클라이언트 리사이징 전환
+- 이미지 최적화 고도화
+- CDN 연동 (예: Cloudflare)
