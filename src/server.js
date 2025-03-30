@@ -12,7 +12,7 @@ import { mkdirs } from './helper/fileHelper.js';
 import { authenticateApiKey } from './helper/auth.js';
 import config from './_config.js';
 
-// API 키 문제 해결
+// TODO: API 키 문제 해결
 const app = express();
 const __dirname = resolve();
 const date = new Date();
