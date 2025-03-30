@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
@@ -6,17 +7,15 @@ import { join, resolve, sep } from 'path';
 import http from 'http';
 import { v4 } from 'uuid';
 import sharp from 'sharp';
-import dotenv from 'dotenv';
 
 import { mkdirs } from './helper/fileHelper.js';
 import { authenticateApiKey } from './helper/auth.js';
 import config from './_config.js';
 
-dotenv.config();
+// API 키 문제 해결
 const app = express();
 const __dirname = resolve();
 const date = new Date();
-
 app.use(cors());
 app.use('/upload', express.static(join(__dirname, 'upload')));
 
