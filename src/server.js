@@ -78,5 +78,5 @@ app.delete('/api/uploadImg', authenticateApiKey, async (req, res) => {
 
 // 서버 시작
 http.createServer(app).listen(config.PORT, () => {
-    console.log(` Server Ready at ${config.DOMAIN}:${config.PORT}`);
+    console.log(` Server Ready at ${config.DOMAIN}`);
 });
