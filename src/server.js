@@ -51,7 +51,7 @@ app.post('/api/uploadImg', authenticateApiKey, filefields, async (req, res) => {
         }
 
         result.data.push({
-            path: `${config.DOMAIN}:${config.PORT}/${folderName.replaceAll(sep, '/')}/`,
+            path: `${config.DOMAIN}/${folderName.replaceAll(sep, '/')}/`,
             originalname: file.originalname,
             uuidName: file.filename,
             ext: file.originalname.slice(file.originalname.lastIndexOf('.')),
