@@ -64,7 +64,7 @@ app.post('/api/uploadImg', authenticateApiKey, filefields, async (req, res) => {
 });
 
 // 이미지 삭제 (API KEY 인증 필요)
-app.delete('/api/uploadImg', authenticateApiKey, async (req, res) => {
+app.delete('/api/deleteImg', authenticateApiKey, async (req, res) => {
     const filePath = join(__dirname, 'upload', req.headers.filename || '');
     if (!fs.existsSync(filePath)) return res.status(404).send('not found');
     try {
@@ -78,5 +78,5 @@ app.delete('/api/uploadImg', authenticateApiKey, async (req, res) => {
 
 // 서버 시작
 http.createServer(app).listen(config.PORT, () => {
-    console.log(` Server Ready at ${config.DOMAIN}`);
+    console.log(` Server Ready `);
 });
